@@ -1,0 +1,78 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <h2>Sign Up</h2>
+      <mat-form-field class="full-width-input">
+        <input
+          matInput
+          placeholder="First Name"
+          formControlName="firstName"
+          required
+        />
+        <mat-error *ngFor="let validation of register_validation_messages.firstName">
+          <mat-error class="error-message" *ngIf="registerForm.get('firstName')?.hasError(validation.type) && (registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched)">{{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input
+          matInput
+          placeholder="Last Name"
+          formControlName="lastName"
+          required
+        />
+        <mat-error *ngFor="let validation of register_validation_messages.lastName">
+          <mat-error class="error-message" *ngIf="registerForm.get('lastName')?.hasError(validation.type) && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)">{{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Choose Date of birth</mat-label>
+        <input matInput formControlName="date" [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngFor="let validation of register_validation_messages.date">
+          <mat-error class="error-message" *ngIf="registerForm.get('date')?.hasError(validation.type) && (registerForm.get('date')?.dirty || registerForm.get('date')?.touched)">{{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input matInput placeholder="Email" formControlName="email" required />
+        <mat-error *ngFor="let validation of register_validation_messages.email">
+          <mat-error class="error-message" *ngIf="registerForm.get('email')?.hasError(validation.type) && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">{{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+        <mat-error *ngFor="let validation of register_validation_messages.password">
+          <mat-error class="error-message" *ngIf="registerForm.get('password')?.hasError(validation.type) && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">{{validation.message}}</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input
+          matInput
+          type="Password"
+          placeholder="confirm password"
+          formControlName="confirmPassword"
+          required
+        />
+        <mat-error *ngFor="let validation of register_validation_messages.confirmPassword">
+          <mat-error class="error-message" *ngIf="(registerForm.get('confirmPassword')?.hasError(validation.type)||  registerForm.hasError(validation.type)) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">{{validation.message}}</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary">Sign Up</button>
+    </form>
+    <h5>
+      If you have already an account , please
+      <span routerLink="/login" class="register">login here</span>
+    </h5>
+  </mat-card-content>
+</mat-card>
