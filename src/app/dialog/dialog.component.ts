@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApliService } from '../services/apli.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store, UpdateState } from '@ngxs/store';
+import { AddProduct, UpdateProduct } from '../store/actions/product.action';
 
 @Component({
   selector: 'app-dialog',
@@ -17,7 +19,8 @@ export class DialogComponent implements OnInit {
     private fb: FormBuilder,
     private service: ApliService,
     @Inject(MAT_DIALOG_DATA) public editData: any,
-    private dialogRef: MatDialogRef<DialogComponent>
+    private dialogRef: MatDialogRef<DialogComponent>,
+    private store:Store
   ) {}
 
   ngOnInit(): void {
@@ -46,31 +49,30 @@ export class DialogComponent implements OnInit {
   addProduct() {
     if (!this.editData) {
       if (this.productForm.valid) {
-        this.service.addProducts(this.productForm.value).subscribe({
-          next: (res) => {
-            alert('product added successfully');
-            this.productForm.reset();
-            this.dialogRef.close('save');
-          },
-          error: () => {
-            alert('error while adding produt');
-          },
-        });
+        console.log(this.productForm.value)
+        this.store.dispatch(new AddProduct(this.productForm.value));
+        alert('product added successfully');
+        this.productForm.reset();
+        this.dialogRef.close('save');
       }
     } else {
       this.updateProduct();
     }
   }
   updateProduct(){
-    this.service.putProduct(this.productForm.value,this.editData.id).subscribe({
-      next:(res)=>{
-        alert("product updated successfully")
-        this.productForm.reset();
-        this.dialogRef.close('update')
-      },
-      error:()=>{
-        alert("error while updating the product")
-      }
-    })
+    // this.service.putProduct(this.productForm.value,this.editData._id).subscribe({
+    //   next:(res)=>{
+    //     alert("product updated successfully")
+    //     this.productForm.reset();
+    //     this.dialogRef.close('update')
+    //   },
+    //   error:()=>{
+    //     alert("error while updating the product")
+    //   }
+    // })
+    this.store.dispatch(new UpdateProduct(this.productForm.value,this.editData._id));
+    alert("product updated successfully")
+    this.productForm.reset();
+    this.dialogRef.close('update')
   }
 }

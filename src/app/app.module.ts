@@ -25,6 +25,14 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+//NGXS
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { ProductState } from './store/state/product.state';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +62,15 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatTableModule,
     MatPaginatorModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    MatProgressSpinnerModule,
+
+    //NGXS
+    NgxsModule.forRoot([ProductState]),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot()
+
+
 
   ],
   providers: [],

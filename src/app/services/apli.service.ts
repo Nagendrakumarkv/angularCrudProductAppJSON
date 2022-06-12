@@ -5,8 +5,14 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ApliService {
-  produtListUrl="http://localhost:3000/productList/";
-  registerUrl="http://localhost:3000/register/"
+  // produtListUrl="http://localhost:3000/productList/";
+  // registerUrl="http://localhost:3000/register/"
+
+  produtListUrl="http://localhost:9000/products/";
+  registerUrl="http://localhost:9000/registers/";
+
+
+
   constructor(private http:HttpClient) { }
 
   addProducts(data:any){
@@ -17,12 +23,14 @@ export class ApliService {
   }
 
   putProduct(data:any,id:any){
+    console.log("putProduct")
     return this.http.put<any>(this.produtListUrl+id,data);
   }
   deleteProduct(id:any){
     return this.http.delete<any>(this.produtListUrl+id)
   }
  postRegister(data:any){
+   console.log(data)
   return this.http.post<any>(this.registerUrl,data)
  }
  getRegister(){

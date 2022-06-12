@@ -1,49 +1,22 @@
 {
   "productList": [
     {
-      "productName": "Banana",
-      "category": "Fruits",
-      "date": "2022-05-11T18:30:00.000Z",
+      "productName": "opp",
+      "category": "Electronics",
+      "date": "2022-05-31T18:30:00.000Z",
       "freshness": "fresh",
-      "price": 300,
-      "comment": "this is fresh banana",
+      "price": 7,
+      "comment": "mmm",
       "id": 1
     },
     {
-      "productName": "apple",
-      "category": "Fruits",
-      "date": "2022-05-03T18:30:00.000Z",
-      "freshness": "fresh",
-      "price": 800,
-      "comment": "fresh apple",
-      "id": 2
-    },
-    {
-      "productName": "charger",
-      "category": "Electronics",
-      "date": "2022-05-11T18:30:00.000Z",
-      "freshness": "second hand",
-      "price": 867,
-      "comment": "used charger",
-      "id": 3
-    },
-    {
-      "productName": "ball",
-      "category": "Electronics",
-      "date": "2022-05-12T18:30:00.000Z",
-      "freshness": "fresh",
-      "price": 400,
-      "comment": "fresh ball",
-      "id": 4
-    },
-    {
-      "productName": "carrot",
+      "productName": "kakak",
       "category": "Vegetables",
-      "date": "2022-05-09T18:30:00.000Z",
+      "date": "2022-06-08T18:30:00.000Z",
       "freshness": "fresh",
-      "price": 400,
-      "comment": "fresh carrot",
-      "id": 5
+      "price": 100,
+      "comment": "ndndnd",
+      "id": 2
     }
   ],
   "register": [

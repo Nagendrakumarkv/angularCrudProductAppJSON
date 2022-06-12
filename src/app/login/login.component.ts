@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
     this.service.getRegister().subscribe({
       next: (res) => {
         this.dbCredential = res;
+        console.log(this.dbCredential.id)
       },
       error: () => {
         alert('error while fetching register data');
@@ -58,7 +59,7 @@ export class LoginComponent implements OnInit {
           this.loginForm.value.email === this.dbCredential[i].email &&
           this.loginForm.value.password === this.dbCredential[i].password
         ) {
-          this.router.navigate(['dashboard', this.dbCredential[i].id]);
+          this.router.navigate(['dashboard', this.dbCredential[i]._id]);
         } else {
           this.isLogginError = true;
           this.loginError = 'please enter valid username and password';
