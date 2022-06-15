@@ -6,12 +6,6 @@ mat-card {
 mat-form-field {
   display: block;
 }
-.register{
-color: blue;
- text-decoration: underline;
-  cursor: pointer;
-  cursor: hand;
-}
 .example-radio-group {
   display: flex;
   flex-direction: row;
@@ -21,4 +15,12 @@ color: blue;
 
 .example-radio-button {
   margin: 5px;
+}
+.login{
+  color:blue;
+}
+.login:hover{
+  text-decoration: underline;
+  cursor:pointer;
+  cursor: hand;
 }
