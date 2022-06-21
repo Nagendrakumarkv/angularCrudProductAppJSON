@@ -33,14 +33,12 @@ export class RegisterComponent implements OnInit {
   genderList = ['Male', 'Female', 'both'];
   registerForm!: FormGroup;
   registerdUsers: any;
-  alreadyRegisterUsernameError: any;
-  isAlreadyRegisteredUsername: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private dialog:MatDialog
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -70,21 +68,23 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.isAlreadyRegisteredUsername = false;
     if (this.registerForm.valid) {
-        this.authService.createUser(
-            this.registerForm.value.email,
-            this.registerForm.value.password
-          )
-          .subscribe({
-            next: (res: any) => {
-              console.log(res)
-              let successFullRegister="successfully registered"
-              this.dialog.open(SuccessComponent,{data:{message:successFullRegister}})
-              this.registerForm.reset();
-              this.router.navigate(['/auth/login']);
-            }
-          });
-      }
+      this.authService
+        .createUser(
+          this.registerForm.value.email,
+          this.registerForm.value.password
+        )
+        .subscribe({
+          next: (res: any) => {
+            console.log(res);
+            let successFullRegister = 'successfully registered';
+            this.dialog.open(SuccessComponent, {
+              data: { message: successFullRegister },
+            });
+            this.registerForm.reset();
+            this.router.navigate(['/auth/login']);
+          },
+        });
+    }
   }
 }

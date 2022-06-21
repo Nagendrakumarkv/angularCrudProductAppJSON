@@ -17,9 +17,16 @@ export class LoginComponent implements OnInit {
     ],
     password: [
       { type: 'required', message: 'Password is required' },
-      { type: 'minlength',message: 'Password must be at least 8 characters long',},
-      { type: 'pattern',message: 'password must contain at least one uppercase, lowercase, number and special char',},
-    ]
+      {
+        type: 'minlength',
+        message: 'Password must be at least 8 characters long',
+      },
+      {
+        type: 'pattern',
+        message:
+          'password must contain at least one uppercase, lowercase, number and special char',
+      },
+    ],
   };
 
   loginForm!: FormGroup;
@@ -28,30 +35,37 @@ export class LoginComponent implements OnInit {
   isLogginError: boolean = false;
   loginError: any;
   dbCredential: any;
-  dbCredentialId:any;
+  dbCredentialId: any;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private productService: ProductService,
-    private authService:AuthService
-
-  ) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
   ngOnInit(): void {
     this.isLogginError = false;
     this.loginForm = this.fb.group({
-      email: ['',Validators.compose([  Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),]),],
-      password: ['',Validators.compose([
-        Validators.minLength(8),
-        Validators.required,
-        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$') //this is for the letters (both uppercase and lowercase) and numbers validation
-     ])],
+      email: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ]),
+      ],
+      password: [
+        '',
+        Validators.compose([
+          Validators.minLength(8),
+          Validators.required,
+          Validators.pattern(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}$'
+          ), //this is for the letters (both uppercase and lowercase) and numbers validation
+        ]),
+      ],
     });
   }
   login() {
-    if(this.loginForm.valid){
-      this.authService.loginUser(this.loginForm.value.email,this.loginForm.value.password);
+    if (this.loginForm.valid) {
+      this.authService.loginUser(
+        this.loginForm.value.email,
+        this.loginForm.value.password
+      );
     }
-
   }
 }

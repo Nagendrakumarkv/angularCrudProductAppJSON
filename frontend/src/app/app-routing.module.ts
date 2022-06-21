@@ -6,17 +6,19 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AuthGuard } from './auth/auth-guard';
 
 const routes: Routes = [
-  {path:'',redirectTo:'dashboard',pathMatch:'full'},
-  {path:'dashboard',component:DashboardComponent},
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent },
   // {path:'dashboard/:id',component:DashboardComponent,canActivate:[AuthGuard]},
-  {path:'auth',loadChildren:() => import('./auth/auth.module').then(x => x.AuthModule)},
-  {path:'**',component:PageNotFoundComponent,canActivate:[AuthGuard]},
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((x) => x.AuthModule),
+  },
+  { path: '**', component: PageNotFoundComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers:[AuthGuard]
+  providers: [AuthGuard],
 })
-export class AppRoutingModule { }
-
+export class AppRoutingModule {}

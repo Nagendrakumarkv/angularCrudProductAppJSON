@@ -19,7 +19,7 @@ import { SuccessComponent } from '../dialog/success/success.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit,OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'productName',
     'category',
@@ -33,8 +33,8 @@ export class DashboardComponent implements OnInit,OnDestroy {
   registeredUserId: any;
   registeredUserInfo: any;
   dbCredential: any;
-  userId!:string
-  userIsAuthenticated=false;
+  userId!: string;
+  userIsAuthenticated = false;
 
   @Select(ProductState.getProductList) products$!: Observable<Product[]>;
   @Select(ProductState.getProductsLoaded) produtsLoaded$!: Observable<boolean>;
@@ -50,13 +50,12 @@ export class DashboardComponent implements OnInit,OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private store: Store,
-    private authService:AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-
-    this.userIsAuthenticated=this.authService.getUserIsAuthenticated()
-    this.userId=this.authService.getUserId();
+    this.userIsAuthenticated = this.authService.getUserIsAuthenticated();
+    this.userId = this.authService.getUserId();
 
     this.products$.subscribe((res) => {
       this.dataSource = new MatTableDataSource(res);
@@ -69,9 +68,9 @@ export class DashboardComponent implements OnInit,OnDestroy {
     this.getAllProducts();
   }
 
-  login(){
-    console.log("Hi")
-    this.router.navigate(['/auth/login'])
+  login() {
+    console.log('Hi');
+    this.router.navigate(['/auth/login']);
   }
   logOut() {
     this.authService.logOutUser();
@@ -107,10 +106,12 @@ export class DashboardComponent implements OnInit,OnDestroy {
       });
   }
   deleteProduct(id: any) {
-    console.log(id)
+    console.log(id);
     this.store.dispatch(new DeleteProduct(id));
-    let productDeletedSuccessfull="Product Deleted Successfully"
-    this.dialog.open(SuccessComponent,{data:{message:productDeletedSuccessfull}})
+    let productDeletedSuccessfull = 'Product Deleted Successfully';
+    this.dialog.open(SuccessComponent, {
+      data: { message: productDeletedSuccessfull },
+    });
     this.getAllProducts();
   }
   applyFilter(event: Event) {
@@ -122,6 +123,6 @@ export class DashboardComponent implements OnInit,OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    this.userIsAuthenticated=false
+    this.userIsAuthenticated = false;
   }
 }

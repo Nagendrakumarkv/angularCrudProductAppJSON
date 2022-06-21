@@ -1,7 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product/product.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { Store, UpdateState } from '@ngxs/store';
 import { AddProduct, UpdateProduct } from '../../store/actions/product.action';
 import { SuccessComponent } from '../success/success.component';
@@ -21,8 +25,8 @@ export class DialogComponent implements OnInit {
     private service: ProductService,
     @Inject(MAT_DIALOG_DATA) public editData: any,
     private dialogRef: MatDialogRef<DialogComponent>,
-    private store:Store,
-    private dialog:MatDialog
+    private store: Store,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -51,11 +55,13 @@ export class DialogComponent implements OnInit {
   addProduct() {
     if (!this.editData) {
       if (this.productForm.valid) {
-        console.log(this.productForm.value)
+        console.log(this.productForm.value);
         this.store.dispatch(new AddProduct(this.productForm.value));
         // alert('product added successfully');
-        let productAddedSuccessfull="Product Added Successfully"
-        this.dialog.open(SuccessComponent,{data:{message:productAddedSuccessfull}})
+        let productAddedSuccessfull = 'Product Added Successfully';
+        this.dialog.open(SuccessComponent, {
+          data: { message: productAddedSuccessfull },
+        });
         this.productForm.reset();
         this.dialogRef.close('save');
       }
@@ -63,7 +69,7 @@ export class DialogComponent implements OnInit {
       this.updateProduct();
     }
   }
-  updateProduct(){
+  updateProduct() {
     // this.service.putProduct(this.productForm.value,this.editData._id).subscribe({
     //   next:(res)=>{
     //     alert("product updated successfully")
@@ -74,11 +80,15 @@ export class DialogComponent implements OnInit {
     //     alert("error while updating the product")
     //   }
     // })
-    this.store.dispatch(new UpdateProduct(this.productForm.value,this.editData._id));
-    let productUpdatedSuccessfull="Product Updated Successfully"
-    this.dialog.open(SuccessComponent,{data:{message:productUpdatedSuccessfull}})
+    this.store.dispatch(
+      new UpdateProduct(this.productForm.value, this.editData._id)
+    );
+    let productUpdatedSuccessfull = 'Product Updated Successfully';
+    this.dialog.open(SuccessComponent, {
+      data: { message: productUpdatedSuccessfull },
+    });
 
     this.productForm.reset();
-    this.dialogRef.close('update')
+    this.dialogRef.close('update');
   }
 }

@@ -3,7 +3,11 @@
   <form [formGroup]="productForm">
     <mat-form-field appearance="outline">
       <mat-label>Product Name</mat-label>
-      <input matInput formControlName="productName" placeholder="Product Name" />
+      <input
+        matInput
+        formControlName="productName"
+        placeholder="Product Name"
+      />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Category</mat-label>
@@ -21,7 +25,11 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-label><h2>Product Freshness</h2></mat-label>
-    <mat-radio-group formControlName="freshness" style="margin-top: -20px" class="example-radio-group">
+    <mat-radio-group
+      formControlName="freshness"
+      style="margin-top: -20px"
+      class="example-radio-group"
+    >
       <mat-radio-button
         class="example-radio-button"
         *ngFor="let fresh of freshnessList"
@@ -31,15 +39,26 @@
     </mat-radio-group>
     <mat-form-field appearance="outline">
       <mat-label>Price</mat-label>
-      <input type="number" matInput formControlName="price" placeholder="Price" />
+      <input
+        type="number"
+        matInput
+        formControlName="price"
+        placeholder="Price"
+      />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Comment</mat-label>
-      <textarea matInput formControlName="comment" placeholder="comment"></textarea>
+      <textarea
+        matInput
+        formControlName="comment"
+        placeholder="comment"
+      ></textarea>
     </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions [align]="'end'">
   <button mat-raised-button color="warn" mat-dialog-close="">Cancel</button>
-  <button mat-raised-button color="primary" (click)="addProduct()">{{actionBtn}}</button>
+  <button mat-raised-button color="primary" (click)="addProduct()">
+    {{ actionBtn }}
+  </button>
 </div>
