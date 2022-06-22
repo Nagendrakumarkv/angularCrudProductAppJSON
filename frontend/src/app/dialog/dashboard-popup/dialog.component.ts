@@ -9,6 +9,7 @@ import {
 import { Store, UpdateState } from '@ngxs/store';
 import { AddProduct, UpdateProduct } from '../../store/actions/product.action';
 import { SuccessComponent } from '../success/success.component';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-dialog',
@@ -22,7 +23,6 @@ export class DialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: ProductService,
     @Inject(MAT_DIALOG_DATA) public editData: any,
     private dialogRef: MatDialogRef<DialogComponent>,
     private store: Store,

@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductService } from '../services/product/product.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { DeleteProduct, GetProduct } from '../store/actions/product.action';
 import { ProductState } from '../store/state/product.state';
@@ -30,9 +30,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'action',
   ];
   dataSource!: MatTableDataSource<any>;
-  registeredUserId: any;
-  registeredUserInfo: any;
-  dbCredential: any;
+  registeredUsersInfo: any;
+  userName!: string;
   userId!: string;
   userIsAuthenticated = false;
 
@@ -46,14 +45,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    private service: ProductService,
+    private authServie: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
     private store: Store,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.getRegisteredUserInfo();
+
     this.userIsAuthenticated = this.authService.getUserIsAuthenticated();
     this.userId = this.authService.getUserId();
 
@@ -61,9 +61,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
-    this.activatedRoute.params.subscribe((id) => {
-      this.registeredUserId = id;
     });
     this.getAllProducts();
   }
@@ -78,6 +75,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   getAllProducts() {
     this.store.dispatch(new GetProduct());
+  }
+  getRegisteredUserInfo() {
+    this.authService.geRegisteredtUserInfo().subscribe((data) => {
+      this.registeredUsersInfo = data;
+      for (let i = 0; i < this.registeredUsersInfo.length; i++) {
+        if (this.userId == this.registeredUsersInfo[i]._id) {
+          this.userName = this.registeredUsersInfo[i].email.split('@').slice(0,1);
+        }
+      }
+    });
   }
   openDialog() {
     this.dialog

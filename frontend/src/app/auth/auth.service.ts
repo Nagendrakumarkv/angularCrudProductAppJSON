@@ -42,7 +42,6 @@ export class AuthService {
         authData
       )
       .subscribe((response) => {
-        console.log(response);
         const token = response.token;
         this.token = token;
 
@@ -115,7 +114,7 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
   }
 
-  getUser() {
+  geRegisteredtUserInfo() {
     return this.http.get(this.signupUrl);
   }
 }
