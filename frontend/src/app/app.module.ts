@@ -25,6 +25,9 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { ProductState } from './store/state/product.state';
 
+//NGRX
+import { StoreModule } from '@ngrx/store';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +49,9 @@ import { ProductState } from './store/state/product.state';
     NgxsModule.forRoot([ProductState]),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
+
+    //NGRX
+    StoreModule.forRoot({})
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

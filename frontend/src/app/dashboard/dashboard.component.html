@@ -7,7 +7,7 @@
     <mat-icon>supervised_user_circle</mat-icon>
   </button>
   <span>PRODUCT APP</span>
-  <span style="margin-left: 50px;">Welcome ' {{userName}} ' </span>
+  <span style="margin-left: 50px;" *ngIf="userIsAuthenticated">Welcome ' {{userName}} ' </span>
   <span class="example-spacer"></span>
 
   <button *ngIf="userIsAuthenticated" mat-raised-button color="warn"   (click)="openDialog()"> Add Products</button>
