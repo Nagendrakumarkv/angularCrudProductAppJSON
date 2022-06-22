@@ -6,9 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductService } from '../services/product/product.service';
 import { Router } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
-import { DeleteProduct, GetProduct } from '../store/actions/product.action';
-import { ProductState } from '../store/state/product.state';
 import { Observable, Subscription } from 'rxjs';
 import { Product } from '../models/product.model';
 import { AuthService } from '../auth/auth.service';
@@ -35,19 +32,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userId!: string;
   userIsAuthenticated = false;
 
-  @Select(ProductState.getProductList) products$!: Observable<Product[]>;
-  @Select(ProductState.getProductsLoaded) produtsLoaded$!: Observable<boolean>;
   productLoadedSub!: Subscription;
-  // isProductLoaded:boolean=false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private dialog: MatDialog,
-    private authServie: AuthService,
+    private productService: ProductService,
     private router: Router,
-    private store: Store,
+    // private store: Store,
     private authService: AuthService
   ) {}
 
@@ -57,11 +51,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.userIsAuthenticated = this.authService.getUserIsAuthenticated();
     this.userId = this.authService.getUserId();
 
-    this.products$.subscribe((res) => {
-      this.dataSource = new MatTableDataSource(res);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
     this.getAllProducts();
   }
 
@@ -74,7 +63,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/auth/login']);
   }
   getAllProducts() {
-    this.store.dispatch(new GetProduct());
+    this.productService.getAllProducts().subscribe({
+      next:(res)=>{
+        this.dataSource=new MatTableDataSource(res);
+        this.dataSource.paginator=this.paginator;
+        this.dataSource.sort=this.sort;
+      },
+      error:()=>{
+        alert("error while getting the products")
+      }
+    })
   }
   getRegisteredUserInfo() {
     this.authService.geRegisteredtUserInfo().subscribe((data) => {
@@ -114,7 +112,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   deleteProduct(id: any) {
     console.log(id);
-    this.store.dispatch(new DeleteProduct(id));
+    this.productService.deleteProduct(id).subscribe({
+      next:(res)=>{
+        this.getAllProducts();
+      },
+      error:()=>{
+        alert("error while deleting product");
+      }
+    })
     let productDeletedSuccessfull = 'Product Deleted Successfully';
     this.dialog.open(SuccessComponent, {
       data: { message: productDeletedSuccessfull },

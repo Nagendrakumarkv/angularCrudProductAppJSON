@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { SuccessComponent } from '../../dialog/success/success.component';
@@ -31,11 +31,11 @@ export class RegisterComponent implements OnInit {
   };
 
   genderList = ['Male', 'Female', 'both'];
-  registerForm!: FormGroup;
+  registerForm!: UntypedFormGroup;
   registerdUsers: any;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authService: AuthService,
     private router: Router,
     private dialog: MatDialog

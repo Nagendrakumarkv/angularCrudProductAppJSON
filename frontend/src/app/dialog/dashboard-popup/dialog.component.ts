@@ -1,15 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product/product.service';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { Store, UpdateState } from '@ngxs/store';
-import { AddProduct, UpdateProduct } from '../../store/actions/product.action';
 import { SuccessComponent } from '../success/success.component';
-import { AuthService } from 'src/app/auth/auth.service';
+
 
 @Component({
   selector: 'app-dialog',
@@ -18,14 +16,14 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class DialogComponent implements OnInit {
   freshnessList = ['fresh', 'second hand', 'third hand'];
-  productForm!: FormGroup;
+  productForm!: UntypedFormGroup;
   actionBtn: string = 'Save';
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public editData: any,
     private dialogRef: MatDialogRef<DialogComponent>,
-    private store: Store,
+    private productService:ProductService,
     private dialog: MatDialog
   ) {}
 
@@ -56,8 +54,12 @@ export class DialogComponent implements OnInit {
     if (!this.editData) {
       if (this.productForm.valid) {
         console.log(this.productForm.value);
-        this.store.dispatch(new AddProduct(this.productForm.value));
-        // alert('product added successfully');
+        this.productService.addProducts(this.productForm.value).subscribe({
+          next: (res) => {
+            this.productForm.reset();
+            this.dialogRef.close('save');
+          }
+        });
         let productAddedSuccessfull = 'Product Added Successfully';
         this.dialog.open(SuccessComponent, {
           data: { message: productAddedSuccessfull },
@@ -70,19 +72,12 @@ export class DialogComponent implements OnInit {
     }
   }
   updateProduct() {
-    // this.service.putProduct(this.productForm.value,this.editData._id).subscribe({
-    //   next:(res)=>{
-    //     alert("product updated successfully")
-    //     this.productForm.reset();
-    //     this.dialogRef.close('update')
-    //   },
-    //   error:()=>{
-    //     alert("error while updating the product")
-    //   }
-    // })
-    this.store.dispatch(
-      new UpdateProduct(this.productForm.value, this.editData._id)
-    );
+    this.productService.putProduct(this.productForm.value,this.editData._id).subscribe({
+      next:(res)=>{
+        this.productForm.reset();
+        this.dialogRef.close('update')
+      }
+    })
     let productUpdatedSuccessfull = 'Product Updated Successfully';
     this.dialog.open(SuccessComponent, {
       data: { message: productUpdatedSuccessfull },

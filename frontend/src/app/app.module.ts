@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {  NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,45 +19,34 @@ import { SuccessComponent } from './dialog/success/success.component';
 //Angular material modules
 import { AngularMaterialModule } from './modules/angular-material.module';
 
-//NGXS
-import { NgxsModule } from '@ngxs/store';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-import { ProductState } from './store/state/product.state';
-
 //NGRX
 import { StoreModule } from '@ngrx/store';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DialogComponent,
-    PageNotFoundComponent,
-    DashboardComponent,
-    ErrorComponent,
-    SuccessComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    AngularMaterialModule,
-    //NGXS
-    NgxsModule.forRoot([ProductState]),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    declarations: [
+        AppComponent,
+        DialogComponent,
+        PageNotFoundComponent,
+        DashboardComponent,
+        ErrorComponent,
+        SuccessComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        AngularMaterialModule,
 
-    //NGRX
-    StoreModule.forRoot({})
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent],
+        //NGRX
+        StoreModule.forRoot({})
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
