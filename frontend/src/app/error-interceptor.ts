@@ -7,7 +7,7 @@ import {
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, throwError } from 'rxjs';
-import { ErrorComponent } from './dialog/error/error.component';
+import { ErrorComponent } from './products/dialog/error/error.component';
 import { AuthService } from './auth/auth.service';
 
 @Injectable()

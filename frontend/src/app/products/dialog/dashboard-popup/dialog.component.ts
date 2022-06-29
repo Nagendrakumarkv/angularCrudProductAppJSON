@@ -1,13 +1,20 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { ProductService } from '../../services/product/product.service';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { Product } from '../../models/product.model';
 import { SuccessComponent } from '../success/success.component';
 
+import { Store } from '@ngrx/store';
+import * as productActions from '../../state/product.actions';
+import * as fromProduct from '../../state/product.reducer';
 
 @Component({
   selector: 'app-dialog',
@@ -23,8 +30,8 @@ export class DialogComponent implements OnInit {
     private fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public editData: any,
     private dialogRef: MatDialogRef<DialogComponent>,
-    private productService:ProductService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private store: Store<fromProduct.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -53,37 +60,45 @@ export class DialogComponent implements OnInit {
   addProduct() {
     if (!this.editData) {
       if (this.productForm.valid) {
-        console.log(this.productForm.value);
-        this.productService.addProducts(this.productForm.value).subscribe({
-          next: (res) => {
-            this.productForm.reset();
-            this.dialogRef.close('save');
-          }
-        });
+        const newProduct: Product = {
+          productName: this.productForm.get('productName')?.value,
+          category: this.productForm.get('category')?.value,
+          date: this.productForm.get('date')?.value,
+          freshness: this.productForm.get('freshness')?.value,
+          price: this.productForm.get('price')?.value,
+          comment: this.productForm.get('comment')?.value,
+        };
+
+        this.store.dispatch(new productActions.CreateProduct(newProduct));
+        this.productForm.reset();
+        this.dialogRef.close('save');
         let productAddedSuccessfull = 'Product Added Successfully';
         this.dialog.open(SuccessComponent, {
           data: { message: productAddedSuccessfull },
         });
-        this.productForm.reset();
-        this.dialogRef.close('save');
       }
     } else {
       this.updateProduct();
     }
   }
   updateProduct() {
-    this.productService.putProduct(this.productForm.value,this.editData._id).subscribe({
-      next:(res)=>{
-        this.productForm.reset();
-        this.dialogRef.close('update')
-      }
-    })
+    const updateProduct: Product = {
+      productName: this.productForm.get('productName')?.value,
+      category: this.productForm.get('category')?.value,
+      date: this.productForm.get('date')?.value,
+      freshness: this.productForm.get('freshness')?.value,
+      price: this.productForm.get('price')?.value,
+      comment: this.productForm.get('comment')?.value,
+    };
+    this.store.dispatch(
+      new productActions.UpdateProduct(updateProduct, this.editData._id)
+    );
+
+    this.productForm.reset();
+    this.dialogRef.close('update');
     let productUpdatedSuccessfull = 'Product Updated Successfully';
     this.dialog.open(SuccessComponent, {
       data: { message: productUpdatedSuccessfull },
     });
-
-    this.productForm.reset();
-    this.dialogRef.close('update');
   }
 }

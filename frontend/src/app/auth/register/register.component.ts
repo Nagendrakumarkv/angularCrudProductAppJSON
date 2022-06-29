@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { SuccessComponent } from '../../dialog/success/success.component';
+import { SuccessComponent } from '../../products/dialog/success/success.component';
 import { AuthService } from '../auth.service';
 
 @Component({

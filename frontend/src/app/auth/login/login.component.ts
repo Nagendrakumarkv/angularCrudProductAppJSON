@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ProductService } from '../../services/product/product.service';
+import { ProductService } from '../../products/product.service';
 import { AuthService } from '../auth.service';
 
 @Component({

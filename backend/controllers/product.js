@@ -64,9 +64,6 @@ exports.updateProduct=(req, res, next) => {
     { _id: req.params.id ,creator:req.userData.userId},
     product
   ).then(result => {
-    console.log(product)
-    console.log(product._id)
-    console.log(result)
     if(result.modifiedCount>0){
       res.status(200).json({ message: "Update successful!",result:result });
     }

@@ -16,6 +16,9 @@ export class ProductService {
   getAllProducts() {
     return this.http.get<any>(this.produtListUrl);
   }
+  getProductById(id:any) {
+    return this.http.get<any>(this.produtListUrl+id);
+  }
 
   putProduct(data: any, id: any) {
     console.log('putProduct');

@@ -4,12 +4,15 @@ import { DialogComponent } from '../dialog/dashboard-popup/dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProductService } from '../services/product/product.service';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Product } from '../models/product.model';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { SuccessComponent } from '../dialog/success/success.component';
+
+import { Store, State, select } from '@ngrx/store';
+import * as productActions from '../state/product.actions';
+import * as fromProduct from '../state/product.reducer';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,12 +40,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  products$: Observable<Product[]> | undefined;
+  error$: Observable<String> | undefined;
+
   constructor(
     private dialog: MatDialog,
-    private productService: ProductService,
     private router: Router,
-    // private store: Store,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<fromProduct.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +60,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    console.log('Hi');
     this.router.navigate(['/auth/login']);
   }
   logOut() {
@@ -63,28 +67,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/auth/login']);
   }
   getAllProducts() {
-    this.productService.getAllProducts().subscribe({
-      next:(res)=>{
-        this.dataSource=new MatTableDataSource(res);
-        this.dataSource.paginator=this.paginator;
-        this.dataSource.sort=this.sort;
+    this.store.dispatch(new productActions.LoadProducts());
+    this.products$ = this.store.pipe(select(fromProduct.getProducts));
+    console.log(this.products$);
+    this.products$.subscribe({
+      next: (res) => {
+        console.log(res);
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
-      error:()=>{
-        alert("error while getting the products")
-      }
-    })
+    });
+    this.error$ = this.store.pipe(select(fromProduct.getError));
   }
   getRegisteredUserInfo() {
     this.authService.geRegisteredtUserInfo().subscribe((data) => {
       this.registeredUsersInfo = data;
       for (let i = 0; i < this.registeredUsersInfo.length; i++) {
         if (this.userId == this.registeredUsersInfo[i]._id) {
-          this.userName = this.registeredUsersInfo[i].email.split('@').slice(0,1);
+          this.userName = this.registeredUsersInfo[i].email
+            .split('@')
+            .slice(0, 1);
         }
       }
     });
   }
   openDialog() {
+    console.log('open dialog');
     this.dialog
       .open(DialogComponent, {
         width: '30%',
@@ -98,6 +107,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   editProduct(row: any) {
+    this.store.dispatch(new productActions.LoadProduct(row._id));
     this.dialog
       .open(DialogComponent, {
         width: '30%',
@@ -111,20 +121,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
   deleteProduct(id: any) {
-    console.log(id);
-    this.productService.deleteProduct(id).subscribe({
-      next:(res)=>{
-        this.getAllProducts();
-      },
-      error:()=>{
-        alert("error while deleting product");
-      }
-    })
-    let productDeletedSuccessfull = 'Product Deleted Successfully';
-    this.dialog.open(SuccessComponent, {
-      data: { message: productDeletedSuccessfull },
-    });
-    this.getAllProducts();
+    if (confirm('Are You Sure You want to Delete the Product?')) {
+      this.store.dispatch(new productActions.DeleteProduct(id));
+      let productDeletedSuccessfull = 'Product Deleted Successfully';
+      this.dialog.open(SuccessComponent, {
+        data: { message: productDeletedSuccessfull },
+      });
+      this.getAllProducts();
+    }
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
